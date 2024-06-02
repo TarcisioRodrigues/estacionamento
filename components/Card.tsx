@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Container } from './Container';
 import { apiClientPython } from '~/services/api';
@@ -15,8 +15,11 @@ export const Card = ({ title, subtitle1, subtitle2, id }: CardProps) => {
     const { data } = await apiClientPython.get(`/vagas/${Number(id)}`);
     setEstacionamento(data);
   };
-  React.useEffect(() => {
+  useEffect(() => {
     getEstacionamento();
+    const intervalId = setInterval(getEstacionamento, 300000); // 5 minutes in milliseconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
   return (
     <View style={styles.cardContainer}>

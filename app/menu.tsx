@@ -13,6 +13,9 @@ const Menu = () => {
   };
   React.useEffect(() => {
     getEstacionamento();
+    const intervalId = setInterval(getEstacionamento, 300000); // 5 minutes in milliseconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
   return (
     <View style={styles.menuContainer}>
