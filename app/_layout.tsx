@@ -1,12 +1,21 @@
-import { AuthProvider } from '~/context/authContext';
-import '../global.css';
+// src/app/_layout.js
+import React, { useContext } from 'react';
+import { Redirect, Stack } from 'expo-router';
+import { AuthProvider, AuthContext } from '../context/authContext';
 
-import { Stack } from 'expo-router';
-
-export default function Layout() {
+function Layout() {
+  const { isLoggedIn } = useContext(AuthContext);
+  if (!isLoggedIn) {
+    <Redirect href="sign-in" />;
+  }
   return (
     <AuthProvider>
-      <Stack />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        <Stack.Screen name="menu" options={{ headerShown: false }} />
+      </Stack>
     </AuthProvider>
   );
 }
+
+export default Layout;

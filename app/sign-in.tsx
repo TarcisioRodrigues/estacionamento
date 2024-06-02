@@ -1,4 +1,4 @@
-import { Link, Stack } from 'expo-router';
+import { Link, Redirect, Stack } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AuthContext } from '~/context/authContext';
@@ -6,10 +6,16 @@ import { AuthContext } from '~/context/authContext';
 const Signin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
+
   const { login } = useContext(AuthContext);
   const handleLogin = async () => {
     await login(username, password);
+    setRedirectTo('/menu');
   };
+  if (redirectTo) {
+    return <Redirect href={redirectTo} />;
+  }
 
   return (
     <>
