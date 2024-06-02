@@ -8,10 +8,14 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
-  const { login } = useContext(AuthContext);
+  const { login, token } = useContext(AuthContext);
   const handleLogin = async () => {
     await login(username, password);
-    setRedirectTo('/menu');
+    if (token) {
+      setRedirectTo('/menu');
+    } else {
+      alert('usuario não encontrado');
+    }
   };
   if (redirectTo) {
     return <Redirect href={redirectTo} />;

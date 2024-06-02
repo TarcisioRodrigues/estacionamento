@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const loadToken = async () => {
       try {
         const tokenString = await AsyncStorage.getItem('token');
-        console.log('Aqui', tokenString);
+
         if (tokenString) {
           setToken(tokenString);
           setIsLoggedIn(true);
@@ -39,8 +39,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const token = await apiClient.post('/auth', { name, password });
       setToken(token.data.token);
-      console.log('casdawd', token.data.token);
+
       await AsyncStorage.setItem('token', token?.data?.token);
+      if (!token) {
+        router.push('/sign-in');
+      }
       setIsLoggedIn(true);
     } catch (error) {
       console.error('Erro ao salvar token:', error);
