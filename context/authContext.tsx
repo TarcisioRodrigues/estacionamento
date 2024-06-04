@@ -4,11 +4,13 @@ import React, { ReactNode, createContext, useEffect, useState } from 'react';
 import { apiClient } from '~/services/api';
 export const AuthContext = createContext<{
   isLoggedIn: boolean;
+  user: string | null;
   token: string | null;
   login: (name: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }>({
   isLoggedIn: false,
+  user: null,
   token: null,
   login: async () => {},
   logout: async () => {},
@@ -18,6 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState<string | null>('');
+  const [user, setUser] = useState<string | null>('');
 
   useEffect(() => {
     const loadToken = async () => {
@@ -33,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     };
     loadToken();
-  }, []);
+  }, [user]);
 
   async function login(name: string, password: string) {
     try {
@@ -43,6 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await AsyncStorage.setItem('token', token?.data?.token);
       if (!token) {
         router.push('/sign-in');
+      }
+      if (token.data.user) {
+        setUser(token.data.user.name);
+        return true;
       }
       setIsLoggedIn(true);
     } catch (error) {
@@ -54,6 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await AsyncStorage.removeItem('token');
       setIsLoggedIn(false);
+      setUser('');
       router.push('/sign-in');
     } catch (error) {
       console.error('Erro ao limpar token:', error);
@@ -61,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, token, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, token, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );

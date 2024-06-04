@@ -1,5 +1,5 @@
 import { Link, Redirect, Stack } from 'expo-router';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AuthContext } from '~/context/authContext';
 
@@ -8,13 +8,13 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
-  const { login, token } = useContext(AuthContext);
+  const { login, token, isLoggedIn, user } = useContext(AuthContext);
   const handleLogin = async () => {
-    await login(username, password);
-    if (token) {
+    const success = await login(username, password);
+    if (success) {
       setRedirectTo('/menu');
     } else {
-      alert('usuario não encontrado');
+      alert('Usuário não encontrado');
     }
   };
   if (redirectTo) {

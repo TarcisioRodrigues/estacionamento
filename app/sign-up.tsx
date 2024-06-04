@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Link, Stack } from 'expo-router';
 import React, { useContext, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
