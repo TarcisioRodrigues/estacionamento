@@ -1,6 +1,6 @@
+import { Link } from 'expo-router';
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Container } from './Container';
+import { StyleSheet, Text, View } from 'react-native';
 import { apiClientPython } from '~/services/api';
 
 interface CardProps {
@@ -17,7 +17,7 @@ export const Card = ({ title, subtitle1, subtitle2, id }: CardProps) => {
   };
   useEffect(() => {
     getEstacionamento();
-    const intervalId = setInterval(getEstacionamento, 300000); // 5 minutes in milliseconds
+    const intervalId = setInterval(getEstacionamento, 60000); // 5 minutes in milliseconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);

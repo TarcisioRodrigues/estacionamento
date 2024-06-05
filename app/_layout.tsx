@@ -13,6 +13,7 @@ function Layout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="sign-in" options={{ headerShown: false }} />
         <Stack.Screen name="menu" options={{ headerShown: false }} />
+        <Stack.Screen name="Map" options={{ headerShown: false }} />
       </Stack>
     </AuthProvider>
   );
